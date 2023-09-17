@@ -6,7 +6,11 @@ spring:
     config:
       server:
         git:
-          uri: ''
-          searchPath:
-          username:
-          password:
+          uri: 'https://github.com/PierreChavez/ap-store.git'
+          username: ${GIT_USER}
+          password: ${GIT_PASSWORD}
+          search-paths: 'config-data'
+  security:
+    user:
+      name: root
+      password: s3cr3t
