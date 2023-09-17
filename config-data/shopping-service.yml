@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:shoppingDB;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: false
+        format_sql: false
+  h2:
+    console:
+      enabled: true
+
+
+logging:
+  pattern:
+    dateformat: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5P} %m%n"
+server:
+  port: 8093
+  error:
+    include-message: always
+
+
