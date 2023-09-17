@@ -6,10 +6,10 @@ spring:
     config:
       server:
         git:
-          uri: 'https://github.com/PierreChavez/ap-store.git'
+          uri: https://github.com/PierreChavez/ap-store.git
           username: ${GIT_USER}
           password: ${GIT_PASSWORD}
-          search-paths: 'config-data'
+          searchPaths: config-data
   security:
     user:
       name: root
