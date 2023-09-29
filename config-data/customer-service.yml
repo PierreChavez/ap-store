@@ -19,7 +19,6 @@ spring:
     console:
       enabled: true
 
-
 logging:
   pattern:
     dateformat: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5P} %m%n"
@@ -27,5 +26,7 @@ server:
   port: 8092
   error:
     include-message: always
-
-
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8099/eureka/
