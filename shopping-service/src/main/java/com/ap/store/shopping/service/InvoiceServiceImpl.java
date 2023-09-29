@@ -1,6 +1,8 @@
 package com.ap.store.shopping.service;
 
 
+import com.ap.store.shopping.client.CustomerClient;
+import com.ap.store.shopping.client.ProductClient;
 import com.ap.store.shopping.entity.Invoice;
 import com.ap.store.shopping.entity.InvoiceItem;
 import com.ap.store.shopping.model.Customer;
@@ -25,6 +27,12 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Autowired
     InvoiceItemsRepository invoiceItemsRepository;
 
+    @Autowired
+    CustomerClient clientClient;
+
+    @Autowired
+    ProductClient productClient;
+
     @Override
     public List<Invoice> findInvoiceAll() {
         return  invoiceRepository.findAll();
@@ -40,6 +48,9 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setState("CREATED");
         invoiceDB = invoiceRepository.save(invoice);
 
+				invoiceDB.getItems().forEach(invoiceItem -> {
+						productClient.updateStock(invoiceItem.getId(), invoiceItem.getQuantity() * -1);
+				});
 
         return invoiceDB;
     }
