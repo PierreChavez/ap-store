@@ -28,29 +28,29 @@ public class InvoiceServiceImpl implements InvoiceService {
     InvoiceItemsRepository invoiceItemsRepository;
 
     @Autowired
-    CustomerClient clientClient;
+    CustomerClient customerClient;
 
     @Autowired
     ProductClient productClient;
 
     @Override
     public List<Invoice> findInvoiceAll() {
-        return  invoiceRepository.findAll();
+        return invoiceRepository.findAll();
     }
 
 
     @Override
     public Invoice createInvoice(Invoice invoice) {
-        Invoice invoiceDB = invoiceRepository.findByNumberInvoice ( invoice.getNumberInvoice () );
-        if (invoiceDB !=null){
-            return  invoiceDB;
+        Invoice invoiceDB = invoiceRepository.findByNumberInvoice(invoice.getNumberInvoice());
+        if (invoiceDB != null) {
+            return invoiceDB;
         }
         invoice.setState("CREATED");
         invoiceDB = invoiceRepository.save(invoice);
 
-				invoiceDB.getItems().forEach(invoiceItem -> {
-						productClient.updateStock(invoiceItem.getId(), invoiceItem.getQuantity() * -1);
-				});
+        invoiceDB.getItems().forEach(invoiceItem -> {
+            productClient.updateStock(invoiceItem.getProductId(), invoiceItem.getQuantity() * -1);
+        });
 
         return invoiceDB;
     }
@@ -59,8 +59,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public Invoice updateInvoice(Invoice invoice) {
         Invoice invoiceDB = getInvoice(invoice.getId());
-        if (invoiceDB == null){
-            return  null;
+        if (invoiceDB == null) {
+            return null;
         }
         invoiceDB.setCustomerId(invoice.getCustomerId());
         invoiceDB.setDescription(invoice.getDescription());
@@ -74,8 +74,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public Invoice deleteInvoice(Invoice invoice) {
         Invoice invoiceDB = getInvoice(invoice.getId());
-        if (invoiceDB == null){
-            return  null;
+        if (invoiceDB == null) {
+            return null;
         }
         invoiceDB.setState("DELETED");
         return invoiceRepository.save(invoiceDB);
@@ -84,7 +84,20 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public Invoice getInvoice(Long id) {
 
-        Invoice invoice= invoiceRepository.findById(id).orElse(null);
-        return invoice ;
+        Invoice invoice = invoiceRepository.findById(id).orElse(null);
+
+        if (null != invoice) {
+            Customer customer = customerClient.getCustomer(invoice.getCustomerId()).getBody();
+            invoice.setCustomer(customer);
+
+            List<InvoiceItem> invoiceItems = invoice.getItems().stream().map(invoiceItem -> {
+                Product product = productClient.getProduct(invoiceItem.getProductId()).getBody();
+                invoiceItem.setProduct(product);
+                return invoiceItem;
+            }).toList();
+
+            invoice.setItems(invoiceItems);
+        }
+        return invoice;
     }
 }
