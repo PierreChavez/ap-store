@@ -32,7 +32,7 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8099/eureka/
 Feign:
-  hystrix:
+  circuitbreaker:
     enabled: true
 management:
   endpoints:
