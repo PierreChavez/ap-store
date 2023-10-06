@@ -29,9 +29,13 @@ resilience4j:
     instances:
       CustomerClientgetCustomer:
         minimumNumberOfCalls: 69
+      ProductClientgetProduct:
+        minimumNumberOfCalls: 69
   timelimiter:
     instances:
       CustomerClientgetCustomer:
+        timeoutDuration: 10s
+      ProductClientgetProduct:
         timeoutDuration: 10s
 logging:
   pattern:
