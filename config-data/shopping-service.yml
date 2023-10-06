@@ -18,8 +18,21 @@ spring:
   h2:
     console:
       enabled: true
-
-
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+        alphanumeric-ids:
+          enabled: true
+resilience4j:
+  circuitbreaker:
+    instances:
+      CustomerClientgetCustomer:
+        minimumNumberOfCalls: 69
+  timelimiter:
+    instances:
+      CustomerClientgetCustomer:
+        timeoutDuration: 10s
 logging:
   pattern:
     dateformat: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5P} %m%n"
@@ -31,9 +44,6 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8099/eureka/
-feign:
-  circuitbreaker:
-    enabled: true
 management:
   endpoints:
     web:

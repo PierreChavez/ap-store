@@ -1,9 +1,13 @@
 package com.ap.store.shopping.client;
 
 import com.ap.store.shopping.model.Customer;
+import feign.FeignException;
 import org.springframework.http.ResponseEntity;
 
-public class CustomerHystrixFallbackFactory implements CustomerClient {
+
+public class CustomerFallback implements CustomerClient {
+
+
     @Override
     public ResponseEntity<Customer> getCustomer(long id) {
 
@@ -16,3 +20,5 @@ public class CustomerHystrixFallbackFactory implements CustomerClient {
         return ResponseEntity.ok(customer);
     }
 }
+
+
