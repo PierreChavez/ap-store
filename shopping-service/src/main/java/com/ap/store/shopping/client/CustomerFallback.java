@@ -1,10 +1,10 @@
 package com.ap.store.shopping.client;
 
 import com.ap.store.shopping.model.Customer;
-import feign.FeignException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class CustomerFallback implements CustomerClient {
 
 
